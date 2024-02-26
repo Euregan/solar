@@ -52,7 +52,7 @@ const App = () => {
     position: [
       planet.distance * distanceMultiplier + planetMinimumDistance,
       0,
-      0,
+      55,
     ] as [number, number, number],
     size: sizeMultiplier * planet.size,
   }));
