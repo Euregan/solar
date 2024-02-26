@@ -4,10 +4,12 @@ type PlanetProps = {
 };
 
 const Planet = ({ position, size }: PlanetProps) => (
-  <mesh position={position}>
-    <sphereGeometry args={[size / 2]} />
-    <meshStandardMaterial />
-  </mesh>
+  <group position={position}>
+    <mesh castShadow>
+      <sphereGeometry args={[size / 2]} />
+      <meshStandardMaterial />
+    </mesh>
+  </group>
 );
 
 export default Planet;

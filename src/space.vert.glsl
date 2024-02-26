@@ -1,4 +1,4 @@
-varying vec4 vertexWorldPosition;
+out vec4 vertexWorldPosition;
 
 void main() {
     vertexWorldPosition = (modelMatrix * vec4(position, 1.0));

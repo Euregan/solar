@@ -48,6 +48,15 @@ const App = () => {
     (planetMaximumDistance - planetMinimumDistance) / furthestPlanetDistance;
   const sizeMultiplier = scale / largestPlanetSize;
 
+  const scaledPlanets = planets.map((planet) => ({
+    position: [
+      planet.distance * distanceMultiplier + planetMinimumDistance,
+      0,
+      0,
+    ] as [number, number, number],
+    size: sizeMultiplier * planet.size,
+  }));
+
   return (
     <Canvas gl={{ toneMapping: NoToneMapping }}>
       <color attach="background" args={[0x08080a]} />
@@ -56,20 +65,12 @@ const App = () => {
 
       <ambientLight intensity={1} color={0x242628} />
 
-      <Space sunSize={sunSize} />
+      <Space sunSize={sunSize} planets={scaledPlanets} />
 
-      <Sun position={[0, sunSize, 0]} size={sunSize} />
+      <Sun position={[0, 0, 0]} size={sunSize} />
 
-      {planets.map((planet, index) => (
-        <Planet
-          key={index}
-          position={[
-            planet.distance * distanceMultiplier + planetMinimumDistance,
-            sunSize,
-            0,
-          ]}
-          size={sizeMultiplier * planet.size}
-        />
+      {scaledPlanets.map(({ position, size }, index) => (
+        <Planet key={index} position={position} size={size} />
       ))}
     </Canvas>
   );
