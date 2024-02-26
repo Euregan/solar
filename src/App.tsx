@@ -50,6 +50,8 @@ const App = () => {
 
   return (
     <Canvas gl={{ toneMapping: NoToneMapping }}>
+      <color attach="background" args={[0x08080a]} />
+
       <OrbitControls />
 
       <ambientLight intensity={1} color={0x242628} />
