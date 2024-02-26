@@ -52,13 +52,16 @@ const App = () => {
     position: [
       planet.distance * distanceMultiplier + planetMinimumDistance,
       0,
-      55,
+      0,
     ] as [number, number, number],
     size: sizeMultiplier * planet.size,
   }));
 
   return (
-    <Canvas gl={{ toneMapping: NoToneMapping }}>
+    <Canvas
+      gl={{ toneMapping: NoToneMapping }}
+      camera={{ position: [-25, 25, -50] }}
+    >
       <color attach="background" args={[0x08080a]} />
 
       <OrbitControls />
