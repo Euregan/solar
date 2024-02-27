@@ -106,8 +106,6 @@ const SolarSystem = () => {
 
   return (
     <>
-      <ambientLight intensity={1} color={0x242628} />
-
       <Space
         ref={spaceMaterialRef}
         sunSize={sunSize}
