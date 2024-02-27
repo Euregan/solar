@@ -5,8 +5,8 @@ precision mediump float;
 #define sunColor vec3(0.2823, 0.2666, 0.1960)
 #define planetCount 8
 #define starScale 900.0
-#define starsTreshold 9.5
-#define starsExposure 200.0
+#define starsTreshold 8.0
+#define starsExposure 35.0
 
 #define PI 3.1415926535897932384626433832795
 
