@@ -1,5 +1,4 @@
 import { useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import { useControls } from "leva";
 import Space from "./Space";
 import Sun from "./Sun";
@@ -107,10 +106,6 @@ const SolarSystem = () => {
 
   return (
     <>
-      <color attach="background" args={[0x08080a]} />
-
-      <OrbitControls />
-
       <ambientLight intensity={1} color={0x242628} />
 
       <Space

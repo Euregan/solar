@@ -14,7 +14,7 @@ type SpaceProps = {
 const Space = forwardRef<ShaderMaterial, SpaceProps>(
   ({ sunSize, planets }, ref) => (
     <mesh rotation={[Math.PI * 1.5, 0, 0]} receiveShadow>
-      <planeGeometry args={[500, 500]} />
+      <planeGeometry args={[1500, 1500]} />
       <shaderMaterial
         ref={ref}
         args={[{ vertexShader, fragmentShader }]}
