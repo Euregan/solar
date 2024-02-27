@@ -67,7 +67,7 @@ const SolarSystem = () => {
       planet.distance * distanceMultiplier + planetMinimumDistance,
       0,
       0
-    ),
+    ).applyAxisAngle(orbitAxis, Math.PI * planet.speed),
     size: sizeMultiplier * planet.size,
     speed: planet.speed,
   }));
