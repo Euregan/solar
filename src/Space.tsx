@@ -1,7 +1,7 @@
+import { forwardRef } from "react";
+import { ShaderMaterial, Vector3 } from "three";
 import vertexShader from "./space.vert.glsl";
 import fragmentShader from "./space.frag.glsl";
-import { ShaderMaterial, Vector3 } from "three";
-import { forwardRef } from "react";
 
 type SpaceProps = {
   sunSize: number;
