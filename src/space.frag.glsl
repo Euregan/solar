@@ -73,7 +73,7 @@ void main() {
 
         float angle = atan(planetPosition.z / planetPosition.x);
 
-        float shadowLength = 1.2 * planetSize;
+        float shadowLength = 3.0 * planetSize;
         float shadowWidth = planetSize;
 
         vec2 lengthOffset = planetPosition.xz * (shadowLength / length(planetPosition.xz));
