@@ -6,6 +6,7 @@ import Sun from "./Sun";
 import Planet from "./Planet";
 import { Group, ShaderMaterial, Vector3 } from "three";
 import { useRef } from "react";
+import { SpecialInputs } from "leva/dist/declarations/src/types";
 
 // Everything is in km and km/s
 const planets = [
@@ -55,6 +56,12 @@ const SolarSystem = () => {
     planetMaximumDistance: 250,
     scale: 10,
     speed: 0.001,
+    play: {
+      label: "Toggle animation",
+      type: "BUTTON" as SpecialInputs.BUTTON,
+      onClick: () => (play.current = !play.current),
+      settings: {},
+    },
   });
 
   const distanceMultiplier =
@@ -72,25 +79,29 @@ const SolarSystem = () => {
     speed: planet.speed,
   }));
 
-  console.log(positionedPlanets);
-
   const spaceMaterialRef = useRef<ShaderMaterial>(null);
   const planetsRef = useRef<Array<Group>>([]);
+  const play = useRef(true);
 
   useFrame(() => {
-    const updatedPlanetPositions = positionedPlanets.map((planet, index) => {
-      // This updates the vector, so there is no particular need to store the result anywhere
-      planet.position.applyAxisAngle(orbitAxis, speedMultiplier * planet.speed);
+    if (play.current) {
+      const updatedPlanetPositions = positionedPlanets.map((planet, index) => {
+        // This updates the vector, so there is no particular need to store the result anywhere
+        planet.position.applyAxisAngle(
+          orbitAxis,
+          speedMultiplier * planet.speed
+        );
 
-      planetsRef.current[index].position.copy(planet.position);
+        planetsRef.current[index].position.copy(planet.position);
 
-      return planet.position;
-    });
+        return planet.position;
+      });
 
-    if (spaceMaterialRef.current) {
-      spaceMaterialRef.current.uniforms.planetPositions = {
-        value: updatedPlanetPositions,
-      };
+      if (spaceMaterialRef.current) {
+        spaceMaterialRef.current.uniforms.planetPositions = {
+          value: updatedPlanetPositions,
+        };
+      }
     }
   });
 
