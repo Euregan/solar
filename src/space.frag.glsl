@@ -1,17 +1,23 @@
 precision mediump float;
 
 #define darkestColor vec3(0.0313, 0.0313, 0.0392)
+#define midColor vec3(0.1333, 0.1529, 0.1686)
 #define sunColor vec3(0.2823, 0.2666, 0.1960)
 #define planetCount 8
+
 #define PI 3.1415926535897932384626433832795
 
-in vec4 vertexWorldPosition;
+in vec4 worldPosition;
 uniform float planeSize;
 uniform float sunSize;
 uniform float sunRange;
 
 uniform vec3[planetCount] planetPositions;
 uniform float[planetCount] planetSizes;
+
+float random(vec2 point) {
+    return fract(sin(dot(point.xy, vec2(12.9898, 78.233) * 2.0)) * 43758.5453123);
+}
 
 bool isWithinCircle(vec2 point, vec2 origin, float radius) {
     return distance(point, origin) < radius;
@@ -36,9 +42,11 @@ bool isWithinTriangle(vec2 point, vec2 point1, vec2 point2, vec2 point3) {
 }
 
 void main() {
-    float distanceFromCenter = smoothstep(sunSize / planeSize, sunRange / planeSize, distance(vertexWorldPosition.xz, vec2(0.5)) / planeSize);
+    float closeRatio = smoothstep(sunSize / planeSize, (sunRange / 3.0) / planeSize, distance(worldPosition.xz, vec2(0.5)) / planeSize);
+    float farRatio = smoothstep((sunRange / 3.0) / planeSize, sunRange / planeSize, distance(worldPosition.xz, vec2(0.5)) / planeSize);
 
-    vec3 baseColor = mix(sunColor, darkestColor, vec3(distanceFromCenter));
+    vec3 baseColor = mix(sunColor, midColor, vec3(closeRatio));
+    baseColor = mix(baseColor, darkestColor, vec3(farRatio));
 
     // Handling the planets shadows
     for (int i = 0; i < planetCount; i++) {
@@ -46,8 +54,6 @@ void main() {
         float planetSize = planetSizes[i];
 
         float angle = atan(planetPosition.z / planetPosition.x);
-
-        bool behindPlanet = length(vertexWorldPosition.xz) > length(planetPosition.xz);
 
         float shadowLength = 1.2 * planetSize;
         float shadowWidth = planetSize;
@@ -63,13 +69,15 @@ void main() {
 
         vec2 endPoint = planetPosition.xz + lengthOffset;
 
-        bool isWithinShadowRectangle = isWithinTriangle(vertexWorldPosition.xz, bottomLeft, topLeft, topRight) || isWithinTriangle(vertexWorldPosition.xz, bottomLeft, topRight, bottomRight);
-        bool isWithinShadowCircle = isWithinCircle(vertexWorldPosition.xz, endPoint, planetSize / 2.0);
+        bool isWithinShadowRectangle = isWithinTriangle(worldPosition.xz, bottomLeft, topLeft, topRight) || isWithinTriangle(worldPosition.xz, bottomLeft, topRight, bottomRight);
+        bool isWithinShadowCircle = isWithinCircle(worldPosition.xz, endPoint, planetSize / 2.0);
 
         if (isWithinShadowRectangle || isWithinShadowCircle) {
             baseColor = darkestColor;
         }
     }
 
-    gl_FragColor = vec4(baseColor, 1.0);
+    float grain = random(worldPosition.xz) * 0.025;
+
+    gl_FragColor = vec4(baseColor - grain, 1.0);
 }
